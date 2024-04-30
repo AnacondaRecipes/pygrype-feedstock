@@ -1,5 +1,2 @@
 upload_channels:
   - sfe1ed40
-
-channels:
-    - https://staging.continuum.io/prefect/fs/grype-feedstock/pr1/9c61db1
