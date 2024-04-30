@@ -1,0 +1,56 @@
+{% set name = "pygrype" %}
+{% set version = "0.3.2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: ebbb93cf80657b36bc4eca8a07fc06d510ebbfdca3ec2fe9a0bbcd63f5e0b5d4
+
+build:
+  number: 0
+  # grype is not available for s390x
+  skip: true  # [s390x]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+
+requirements:
+  host:
+    - python
+    - setuptools
+    - setuptools-scm
+    - pip
+    - wheel
+  run:
+    - python
+    - dacite >=1.8.1
+    - grype >=0.75.0
+
+test:
+  imports:
+    - pygrype
+  requires:
+    - pip
+    - pytest
+  source_files:
+    - test
+  commands:
+    - pip check
+    - python -c "from pygrype import Grype; print(Grype().version())"
+    - pytest -v test
+
+about:
+  home: https://github.com/willyw0nka/pygrype
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Python wrapper for Grype
+  description: |
+    A python wrapper for Anchore Grype
+  doc_url: https://github.com/willyw0nka/pygrype
+  dev_url: https://github.com/willyw0nka/pygrype
+
+extra:
+  recipe-maintainers:
+    - lorepirri
